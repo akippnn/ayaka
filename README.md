@@ -1,3 +1,3 @@
-# Kamisato Ayaka 
+# Kamisato Ayaka
 
 Work-in-progress

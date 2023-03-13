@@ -1,4 +1,4 @@
 export interface Keys {
-  discordToken: string | undefined;
-  gptapiKey: string | undefined;
+  discordToken: string | 'nil';
+  gptapiKey: string | 'nil';
 }
