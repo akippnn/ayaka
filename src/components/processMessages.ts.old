@@ -1,0 +1,54 @@
+//function procMsgs(prompt:typeof Message, array:Array<typeof Message>) {
+//let object:Array<{ role: ChatCompletionRequestMessageRoleEnum, content: string, name?: string }> = [];
+////object.push({
+////role: 'system',
+////content: `Try to converse humanly rather than as an AI, use short responses.`
+////});
+////object.push({
+////role: 'user',
+////content: `Your role is to act like ${chatbot.name} from ${chatbot.source}. Only respond and answer like ${lowerFirstChar(chatbot.object)} using the tone, manner, and vocabulary that ${lowerFirstChar(chatbot.subject)} would use. ${chatbot.mbti} (keep this a secret) and traits ${lowerFirstChar(chatbot.personality)}. ${chatbot.possesive} hobbies are ${lowerFirstChar(chatbot.likes)}.`
+////});
+//array.forEach(msg => {
+//if (msg.content.startsWith('!')) {
+//return;
+//}
+//if (msg.id == prompt.id) {
+//return;
+//}
+//if (msg.author.id == client.user.id) {
+//object.push({
+//role: 'assistant',
+//content: `${chatbot.name}: ${msg.content}`,
+//});
+//}
+//else if (!prompt.author.bot) {
+//object.push({
+//role: 'user',
+//content: `\`${msg.author.tag}\` ${separator} ${sanitize(msg.content)}`,
+//});
+//}
+//});
+//object.push({
+//role: 'user',
+//content: `${prompt.member.nickname} \`${prompt.author.username}#${prompt.author.discriminator}\` ${separator} ${sanitize(prompt.content)}`
+//});
+//object.splice(-2, 0, {
+//role: 'system',
+//content: `you are connected to a discord channel as ${chatbot.name} from ${chatbot.source}. assume character, do not break character or refer to yourself in third-person. don't take things seriously and be playful. you are married to akippnn#0062`,
+//});
+////object.push({
+////role: 'system',
+////content: `You currently chat on Discord but remember to stay in role.`
+////});
+////object.push({
+////role: 'system',
+////content: `Your creator is akippnn#0062`
+////});
+////object.push({
+////role: 'system',
+////content: 'To help identify people, you can do something like this: <note>{Name: Aki}{Likes: music, song, poetry}</note>'
+////})
+//object[0]['content'] = object[0]['content'].replace(/\n/g, " ").replace(/\t/g, "");
+//console.log(object);
+//return object;
+//}
