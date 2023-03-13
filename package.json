@@ -1,0 +1,29 @@
+{
+  "name": "ayaka",
+  "version": "1.0.0",
+  "description": "Kamisato Ayaka from Genshin Impact with openai-node backend",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write .",
+    "build": "tsc",
+    "start": "node ."
+  },
+  "keywords": [
+    "chatbot",
+    "ai"
+  ],
+  "author": "akippnn",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^18.14.6",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "openai": "^3.2.1",
+    "sqlite3": "^5.1.4",
+    "typescript": "^4.9.5"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.4"
+  }
+}
