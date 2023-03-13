@@ -10,10 +10,7 @@ interface ProcMsgArgs {
   history: Collection<string, typeof Message>;
 }
 
-function chatHeader(
-  msg: typeof Message,
-  prevAuthor?: string | undefined
-) {
+function chatHeader(msg: typeof Message, prevAuthor?: string | undefined) {
   return !msg.author.bot && prevAuthor === msg.author.id
     ? ""
     : `user ${msg.author.tag} time ${currentTime(msg.createdAt)}`;
