@@ -1,4 +1,4 @@
-export function currentTime(date?: Date) {
+export default function currentTime(date?: Date) {
   if (date) {
     let hours = date.getHours().toString().padStart(2, "0");
     let minutes = date.getMinutes().toString().padStart(2, "0");

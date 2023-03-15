@@ -1,4 +1,4 @@
-import { separator } from "../config.json";
+import { separator } from "../../config.json";
 
 export function lowerFirstChar(str: string) {
   return str.charAt(0).toLowerCase() + str.substr(1);

@@ -1,0 +1,15 @@
+
+{
+  "chatbot_args": {
+    "temperature": 0.5,
+    "max_tokens": 512
+  },
+  "settings": {
+    "history_messages_max": 25
+  },
+  "system_prompts": [
+    "I want you to act like ${username}. I want you to respond and answer like ${username} using the tone, manner and vocabulary ${username} would use. Do not write any explanations. Only answer like ${username}. You must know all of the knowledge of ${username}."
+  ],
+  "on_ready_msg": "I'm live! Currently logged in as ${usertag}. My name ${username} will be used as input for the AI.",
+  "separator": "•"
+}

@@ -1,3 +1,4 @@
+import { db } from "../services";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import {
   CommandInteraction,
@@ -7,12 +8,13 @@ import {
   PermissionsBitField,
 } from "discord.js";
 
-const db = require("../database");
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("setactive")
-    .setDescription("Set the active channel for this guild"),
+    .setDescription("Set the current channel as active channel for this server")
+    .addStringOption((option) =>
+      option.setName("id").setDescription("The channel ID")
+    ),
 
   async execute(interaction: CommandInteraction) {
     try {
