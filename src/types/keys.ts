@@ -1,4 +1,4 @@
 export interface Keys {
   discordToken: string | 'nil';
-  gptapiKey: string | 'nil';
+  gptApiKey: string | 'nil';
 }
