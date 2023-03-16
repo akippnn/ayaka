@@ -1,3 +1,4 @@
+// @ts-ignore
 import { on_ready_msg } from "../../config.json";
 const { Events } = require("discord.js");
 
