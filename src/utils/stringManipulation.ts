@@ -1,3 +1,4 @@
+// @ts-ignore
 import { separator } from "../../config.json";
 
 export function lowerFirstChar(str: string) {

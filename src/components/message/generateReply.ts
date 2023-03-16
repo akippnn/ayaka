@@ -1,3 +1,4 @@
+// @ts-ignore
 import config from "../../../config.json";
 import { ai as openai, db } from "../../services";
 import { Snowflake } from "discord.js";
