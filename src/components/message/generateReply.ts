@@ -25,6 +25,7 @@ export default async function generateReply(
     );
   });
 
+  if (!row) return;
   if (row.channel_snowflake !== message.channel.id) return;
   if (message.author.bot) return;
   if (message.content.startsWith("!")) return;
