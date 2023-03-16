@@ -1,6 +1,6 @@
 {
   "name": "ayaka",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Kamisato Ayaka from Genshin Impact with openai-node backend",
   "main": "dist/index.js",
   "scripts": {
