@@ -3,10 +3,29 @@ import config from "../../../config.json";
 import { ai as openai, db } from "../../services";
 import { Snowflake } from "discord.js";
 import { processMessages } from "./processMessages";
-const { Message } = require("discord.js");
+import GPT3Tokenizer from "gpt3-tokenizer";
+import { RequestArgs } from "openai/dist/base";
+import { forEachChild } from "typescript";
+const { Collection, Message } = require("discord.js");
 
 interface active_channel {
   channel_snowflake: Snowflake;
+}
+
+async function generate(message: typeof Message, history: typeof Collection): Promise<any> {
+  return await openai
+    .createChatCompletion({
+      ...config.chatbot_args,
+      user: message.author.id,
+      messages: processMessages({
+        client: message.client,
+        prompt: message,
+        history: history,
+      }),
+    })
+    .catch((error: unknown) => {
+      console.log(`OPENAI ERR: ${error}`);
+    });
 }
 
 export default async function generateReply(
@@ -31,28 +50,23 @@ export default async function generateReply(
   if (message.author.bot) return;
   if (message.content.startsWith("!")) return;
 
+  const tokenizer = new GPT3Tokenizer({ type: 'gpt3'});
+  console.log(message)
+  console.log(`Tokens used: ${tokenizer.encode(message.content).text.length}`)
+
   try {
-    await message.channel.sendTyping();
+    await message.channel.sendTyping(true);
     let history = await message.channel.messages.fetch({
       limit: config.settings.history_messages_max,
     });
+    history.forEach((message: typeof Message) => {
+      
+    });
     history.reverse();
-    const response = await openai
-      .createChatCompletion({
-        ...config.chatbot_args,
-        model: "gpt-3.5-turbo",
-        messages: processMessages({
-          client: message.client,
-          prompt: message,
-          history: history,
-        }),
-      })
-      .catch((error: unknown) => {
-        console.log(`OPENAI ERR: ${error}`);
-      });
-
+    const response = await generate(message, history);
     console.log(response.data.choices[0].message);
-    let answer = response.data.choices[0].message.content.toString();
+    let answer: string = response.data.choices[0].message.content.toString();
+    console.log(`Tokens used: ${tokenizer.encode(answer).text.length}`)
     await message.channel.send(
       answer.replace(
         new RegExp("^" + message.client.user.username + "[^•:]+[•:]"),
@@ -60,6 +74,7 @@ export default async function generateReply(
       )
     );
   } catch (error: unknown) {
+    await message.channel.sendTyping(false);
     console.log(error);
   }
 }
