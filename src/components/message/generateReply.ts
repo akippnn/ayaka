@@ -1,5 +1,4 @@
-// @ts-ignore
-import config from "../../../config.json";
+import config from "../../config.json";
 import { ai as openai, db } from "../../services";
 import { Snowflake } from "discord.js";
 import { processMessages } from "./processMessages";
@@ -32,15 +31,16 @@ export default async function generateReply(
   if (message.content.startsWith("!")) return;
 
   try {
-    await message.channel.sendTyping();
     let history = await message.channel.messages.fetch({
       limit: config.settings.history_messages_max,
     });
     history.reverse();
+    await message.channel.sendTyping();
     const response = await openai
       .createChatCompletion({
         ...config.chatbot_args,
         model: "gpt-3.5-turbo",
+        stop: ["<|endoftext|>"],
         messages: processMessages({
           client: message.client,
           prompt: message,
