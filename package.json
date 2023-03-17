@@ -1,12 +1,12 @@
 {
   "name": "ayaka",
   "version": "1.0.1",
-  "description": "Kamisato Ayaka from Genshin Impact with openai-node backend",
+  "description": "Discord chatbot with openai-node backend",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write .",
-    "build": "del-cli --force ./dist && tsc",
+    "build": "del-cli --force ./dist && tsc --build --verbose",
     "deploy": "node ./deploy-commands.js",
     "start": "node ."
   },
