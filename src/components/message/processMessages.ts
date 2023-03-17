@@ -1,6 +1,5 @@
 import { ChatCompletionResponseMessage } from "openai";
-// @ts-ignore
-import config from "../../../config.json";
+import config from "../../config.json";
 import { getCurrentTime, sanitize } from "../../utils";
 const { Message } = require("discord.js");
 
