@@ -11,11 +11,11 @@ This project is still heavily work-in-progress and I am currently learning TypeS
 Ayaka Project may be renamed to a more appropriate project name after I consider it feature-complete.
 
 ## Version 1.1
- > <picture>
+> <picture>
 >   <source media="(prefers-color-scheme: light)" srcset="https://github.com/Mqxx/GitHub-Markdown/blob/main/blockquotes/badge/light-theme/issue.svg">
 >   <img alt="Issue" src="https://github.com/Mqxx/GitHub-Markdown/blob/main/blockquotes/badge/dark-theme/issue.svg">
 > </picture><br>
-
+>
 >See pull request [#1](i1)
 
 The next upcoming update will add a couple of quality-of-life improvements. Improvements such as:
