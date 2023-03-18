@@ -1,21 +1,18 @@
 import config from "../../config.json";
 import { ai as openai, db } from "../../services";
-import { Snowflake } from "discord.js";
+import { ActiveChannelRow } from "../../types";
 import { processMessages } from "./processMessages";
 const { Message } = require("discord.js");
 
-interface active_channel {
-  channel_snowflake: Snowflake;
-}
 
 export default async function generateReply(
   message: typeof Message
 ): Promise<void> {
-  const row = await new Promise<active_channel>((resolve, reject) => {
+  const row = await new Promise<ActiveChannelRow>((resolve, reject) => {
     db.get(
       "SELECT channel_snowflake FROM active_channel WHERE guild_snowflake = ?",
       message.guild?.id,
-      (err, row: active_channel) => {
+      (err, row: ActiveChannelRow) => {
         if (err) {
           reject(err);
         } else {
