@@ -6,11 +6,11 @@ const db: sqlite3.Database = new sqlite3.Database(
 );
 
 try {
-  db.run(`CREATE TABLE IF NOT EXISTS active_channel (
-    guild_snowflake TEXT,
-    channel_snowflake TEXT,
-    PRIMARY KEY (guild_snowflake, channel_snowflake)
-    )
+  db.run(`
+    CREATE TABLE IF NOT EXISTS active_channel (
+      guild_snowflake TEXT PRIMARY KEY,
+      channel_snowflake TEXT
+    );
   `);
 } catch (err) {
   console.log(`${err}`);
