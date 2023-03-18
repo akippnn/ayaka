@@ -1,5 +1,5 @@
 import keys from "../keys";
-const { Configuration, OpenAIApi } = require("openai");
+import { Configuration, OpenAIApi } from "openai";
 
 const configuration = new Configuration({
   apiKey: keys.gptApiKey,

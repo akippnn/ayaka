@@ -1,18 +1,11 @@
-// @ts-ignore
-import config from "../../../config.json";
+import config from "../../config.json";
 import { ai as openai, db } from "../../services";
-import { Snowflake } from "discord.js";
+import { ActiveChannelRow } from "../../types";
 import { processMessages } from "./processMessages";
-import GPT3Tokenizer from "gpt3-tokenizer";
-import { RequestArgs } from "openai/dist/base";
-import { forEachChild } from "typescript";
+import { Snowflake } from "discord.js";
 const { Collection, Message } = require("discord.js");
 
-interface active_channel {
-  channel_snowflake: Snowflake;
-}
-
-async function generate(message: typeof Message, history: typeof Collection): Promise<any> {
+async function createChatCompletion(message: typeof Message, history: typeof Collection): Promise<any> {
   return await openai
     .createChatCompletion({
       ...config.chatbot_args,
@@ -31,11 +24,11 @@ async function generate(message: typeof Message, history: typeof Collection): Pr
 export default async function generateReply(
   message: typeof Message
 ): Promise<void> {
-  const row = await new Promise<active_channel>((resolve, reject) => {
+  const row = await new Promise<ActiveChannelRow>((resolve, reject) => {
     db.get(
       "SELECT channel_snowflake FROM active_channel WHERE guild_snowflake = ?",
       message.guild?.id,
-      (err, row: active_channel) => {
+      (err, row: ActiveChannelRow) => {
         if (err) {
           reject(err);
         } else {
@@ -50,9 +43,7 @@ export default async function generateReply(
   if (message.author.bot) return;
   if (message.content.startsWith("!")) return;
 
-  const tokenizer = new GPT3Tokenizer({ type: 'gpt3'});
   console.log(message)
-  console.log(`Tokens used: ${tokenizer.encode(message.content).text.length}`)
 
   try {
     await message.channel.sendTyping(true);
@@ -63,10 +54,10 @@ export default async function generateReply(
       
     });
     history.reverse();
-    const response = await generate(message, history);
+    const response = await createChatCompletion(message, history);
     console.log(response.data.choices[0].message);
     let answer: string = response.data.choices[0].message.content.toString();
-    console.log(`Tokens used: ${tokenizer.encode(answer).text.length}`)
+    
     await message.channel.send(
       answer.replace(
         new RegExp("^" + message.client.user.username + "[^•:]+[•:]"),
