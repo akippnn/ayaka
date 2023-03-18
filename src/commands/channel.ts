@@ -1,12 +1,45 @@
 import { db } from "../services";
+import { ActiveChannelRow } from "../types";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import {
   CommandInteraction,
+  Guild,
   GuildMember,
   TextChannel,
   EmbedBuilder,
   PermissionsBitField,
 } from "discord.js";
+
+async function getActiveChannel(guild: Guild): Promise<string> {
+  return new Promise((resolve, reject) => {
+    db.get(
+      "SELECT channel_snowflake FROM active_channel WHERE guild_snowflake = ?",
+      [guild.id],
+      (err: undefined, row: ActiveChannelRow | undefined) => {
+        if (err) {
+          reject(err);
+        }
+        if (row) {
+          resolve(row.channel_snowflake);
+        } else {
+          resolve("");
+        }
+      }
+    );
+  });
+}
+
+async function setActiveChannel(guild: Guild, channel: TextChannel): Promise<void> {
+  try {
+    await db.run(
+      "INSERT INTO active_channel (guild_snowflake, channel_snowflake) VALUES (?, ?) ON CONFLICT (guild_snowflake) DO UPDATE SET channel_snowflake = ?;",
+      [guild.id, channel.id, channel.id]
+    );
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -57,15 +90,7 @@ module.exports = {
         });
       }
 
-      db.run(
-        "INSERT OR REPLACE INTO active_channel (guild_snowflake, channel_snowflake) VALUES (?, ?)",
-        [guild.id, channel.id],
-        (err: undefined) => {
-          if (err) {
-            throw err;
-          }
-        }
-      );
+      setActiveChannel(guild, channel);
 
       await interaction.reply({
         ephemeral: true,
