@@ -56,21 +56,29 @@ module.exports = {
       const member = interaction.member as GuildMember;
 
       if (!guild) {
-        return await interaction.reply(
-          "This command can only be used in a guild channel."
-        );
+        return await interaction.reply({
+          ephemeral: true,
+          embeds: [
+            new EmbedBuilder()
+              .setDescription(
+                `You can only use this in a server!`
+              )
+              .setColor("#ff0000"),
+          ],
+        })
       }
 
       if (!member.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
-        return await interaction.reply(
-          "You need the `MANAGE_CHANNELS` permission to set the active channel."
-        );
-      }
-
-      if (!channel) {
-        return await interaction.reply(
-          "This command can only be used in a guild channel."
-        );
+        return await interaction.reply({
+          ephemeral: true,
+          embeds: [
+            new EmbedBuilder()
+              .setDescription(
+                `You need the \`MANAGE_CHANNELS\` permission to set the active channel.`
+              )
+              .setColor("#ff0000"),
+          ],
+        })
       }
 
       const hasManageChannels = channel
