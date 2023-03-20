@@ -2,7 +2,7 @@
 {
   "chatbot_args": {
     "model": "gpt-3.5-turbo",
-    "temperature": 0.5,
+    "temperature": 0.75,
     "top_p": 1,
     "max_tokens": 512,
     "presence_penalty": 0,
@@ -13,7 +13,8 @@
     }
   },
   "settings": {
-    "history_messages_max": 25
+    "history_messages_max": 25,
+    "openai_err_retries": 3
   },
   "system_prompts": [
     "I want you to act like ${username} but as a catgirl. I want you to respond and answer like ${username} using the tone, manner and vocabulary ${username} would use. Do not write any explanations. Only answer like ${username}. You must know all of the knowledge of ${username}."
