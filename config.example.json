@@ -16,9 +16,13 @@
     "history_messages_max": 25,
     "openai_err_retries": 3
   },
-  "system_prompts": [
+  "system_prompts": {
+    "begin": [
     "I want you to act like ${username} but as a catgirl. I want you to respond and answer like ${username} using the tone, manner and vocabulary ${username} would use. Do not write any explanations. Only answer like ${username}. You must know all of the knowledge of ${username}."
-  ],
+    ],
+    "-1": [],
+    "end": []
+  },
   "on_ready_msg": "I'm live! Currently logged in as ${usertag}. My name ${username} will be used as input for the AI.",
   "separator": "•"
 }
