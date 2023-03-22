@@ -1,5 +1,6 @@
 import { ChatCompletionResponseMessage } from "openai";
 import config from "../../config.json";
+import { Config } from "../../types/config";
 import { getCurrentTime, sanitize } from "../../utils";
 const { Message } = require("discord.js");
 
@@ -55,12 +56,27 @@ export function processMessages({
       config.separator
     } ${sanitize(prompt.content)}`,
   });
-  config.system_prompts.forEach((content: string) => {
-    result.splice(-2, 0, {
-      role: "system",
-      content: content.replace("${username}", client.user.username),
+  if (config.system_prompts.hasOwnProperty("begin"))
+    (config as Config).system_prompts["begin"].reverse().forEach((content: string) => {
+      result.splice(1, 0, {
+        role: "system",
+        content: content
+      })
+    })
+  if (config.system_prompts.hasOwnProperty("-1"))
+    (config as Config).system_prompts["-1"].forEach((content: string) => {
+      result.splice(-1, 0, {
+        role: "system",
+        content: content
+      });
     });
-  });
+  if (config.system_prompts.hasOwnProperty("end"))
+    (config as Config).system_prompts["end"].forEach((content: string) => {
+      result.push({
+        role: "system",
+        content: content
+      })
+    })
 
   console.log(result);
   return result;
