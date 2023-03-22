@@ -1,5 +1,3 @@
-[i1]: https://github.com/akippnn/ayaka/pull/1
-[whisper]: https://github.com/openai/whisper
 # Ayaka Project
 Ayaka is a Discord Chatbot that uses the OpenAI's Chat Completion API.
 
@@ -16,7 +14,7 @@ Ayaka Project may be renamed to a more appropriate project name after I consider
 >   <img alt="Issue" src="https://github.com/Mqxx/GitHub-Markdown/blob/main/blockquotes/badge/dark-theme/issue.svg">
 > </picture><br>
 >
->See pull request [#1](i1)
+>See pull request [#1](https://github.com/akippnn/ayaka/pull/1)
 
 The next upcoming update will add a couple of quality-of-life improvements. Improvements such as:
 - Multi-container Docker applications, for easier application management and deployment 
@@ -28,4 +26,4 @@ The next upcoming update will add a couple of quality-of-life improvements. Impr
 - Analyze chat history with a GPT-3 model (preferably Babbage or lower)
 - Analyze chat inputs with Ada for user profiling
 - Bot and user profiles
-- Possibly explore voice communication with the use of speech synthesizers and [OpenAI Whisper](whisper)
+- Possibly explore voice communication with the use of speech synthesizers and [OpenAI Whisper](https://github.com/openai/whisper)
