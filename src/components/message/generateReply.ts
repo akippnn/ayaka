@@ -1,9 +1,27 @@
+import { EmbedBuilder } from "discord.js";
 import config from "../../config.json";
 import { ai as openai, db } from "../../services";
 import { ActiveChannelRow } from "../../types";
+import { retry, sendMessageInChunks } from "../../utils";
 import { processMessages } from "./processMessages";
-const { Message } = require("discord.js");
+const { Collection, Message } = require("discord.js");
 
+async function createChatCompletion(message: typeof Message, history: typeof Collection): Promise<any> {
+  const maxRetries = config.settings.openai_err_retries;
+  return await retry(maxRetries, async () => {
+    await message.channel.sendTyping();
+    return await openai
+      .createChatCompletion({
+        ...config.chatbot_args,
+        user: message.author.id,
+        messages: processMessages({
+          client: message.client,
+          prompt: message,
+          history: history,
+        }),
+      });
+  });
+}
 
 export default async function generateReply(
   message: typeof Message
@@ -27,34 +45,36 @@ export default async function generateReply(
   if (message.author.bot) return;
   if (message.content.startsWith("!")) return;
 
+  console.log(message)
+
   try {
     let history = await message.channel.messages.fetch({
       limit: config.settings.history_messages_max,
     });
     history.reverse();
+    const response = await createChatCompletion(message, history);
     await message.channel.sendTyping();
-    const response: any = await openai
-      .createChatCompletion({
-        ...config.chatbot_args,
-        model: "gpt-3.5-turbo",
-        stop: ["<|endoftext|>"],
-        messages: processMessages({
-          client: message.client,
-          prompt: message,
-          history: history,
-        }),
-      })
-      .catch((error: unknown) => {
-        console.log(`OPENAI ERR: ${error}`);
+    if (!response.data) {
+      await message.reply({
+          ephemeral: true,
+          embeds: [
+            new EmbedBuilder()
+              .setDescription(
+                `An error occured. Please try again.`
+              )
+              .setColor("#ff0000"),
+          ],
       });
-
+    }
     console.log(response.data.choices[0].message);
-    let answer = response.data.choices[0].message.content.toString();
-    await message.channel.send(
-      answer.replace(
+    let answer: string = response.data.choices[0].message.content.toString()
+      .replace(
         new RegExp("^" + message.client.user.username + "[^•:]+[•:]"),
         ""
-      )
+      );
+    
+    await sendMessageInChunks(answer, 2000, async (chunk) =>
+      await message.channel.send(chunk)
     );
   } catch (error: unknown) {
     console.log(error);
